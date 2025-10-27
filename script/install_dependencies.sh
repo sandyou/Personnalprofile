@@ -23,3 +23,23 @@ cp -r build/* /var/www/html/build/
 echo "Installing backend dependencies..."
 cd $APP_DIR/backend/
 npm install
+
+#安裝20版本的node.js
+echo "--- 0. Installing/Upgrading Node.js to v20 ---"
+
+# 適用於 Amazon Linux / CentOS / RHEL (假設您的 EC2 是其中之一):
+sudo yum update -y
+sudo yum install -y curl
+
+# 1. 移除舊版本
+sudo yum remove -y nodejs npm
+
+# 2. 獲取 Node.js 20 LTS 儲存庫並安裝
+curl -sL https://rpm.nodesource.com/setup_20.x | sudo bash -
+sudo yum install -y nodejs
+
+# 3. 檢查新版本 (用於日誌確認)
+echo "Node.js version after upgrade:"
+node -v
+
+echo "--- Finished Node.js setup ---"
