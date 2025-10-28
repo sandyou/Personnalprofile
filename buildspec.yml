@@ -4,7 +4,7 @@ phases:
   # 1. INSTALL PHASE: 設定環境和運行時版本
   install:
     runtime-versions:
-      nodejs: 18 # 請確認這是您的專案所需的 Node.js 版本
+      nodejs: 20 # 請確認這是您的專案所需的 Node.js 版本
     commands:
       # 安裝 PM2 (用於在 EC2 上管理 Node.js 服務)
       - echo "Installing global tools: PM2"
