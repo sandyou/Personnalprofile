@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "--- Running install_and_build.sh as $(whoami) ---"
 APP_DIR="/home/ec2-user/app"
 
 # 1. 停止 Nginx (在配置更新前)
@@ -15,4 +16,4 @@ echo "Installing backend dependencies..."
 cd $APP_DIR/backend/
 npm install
 
-
+echo "--- Finished installing dependencies and building frontend ---"

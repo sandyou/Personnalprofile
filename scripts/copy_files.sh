@@ -13,3 +13,5 @@ echo "Copying frontend build files to Nginx root..."
 # 假設是 'build'
 sudo rm -rf /var/www/html/* # 清空舊檔案
 sudo cp -r $APP_DIR/frontend/dist/* /usr/share/nginx/html/
+
+echo "--- Finished copying files ---" 
