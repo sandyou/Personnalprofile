@@ -12,4 +12,4 @@ echo "Copying frontend build files to Nginx root..."
 # (重要：請確認您的 React 輸出是 'build' 還是 'dist')
 # 假設是 'build'
 sudo rm -rf /var/www/html/* # 清空舊檔案
-sudo cp -r $APP_DIR/frontend/build/* /var/www/html/
+sudo cp -r $APP_DIR/frontend/dist/* /var/www/html/
