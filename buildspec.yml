@@ -1,50 +1,29 @@
 version: 0.2
 
 phases:
-  # 1. INSTALL PHASE: 設定環境和運行時版本
   install:
     runtime-versions:
-      nodejs: 20 # 請確認這是您的專案所需的 Node.js 版本
+      nodejs: 20
+  build:
     commands:
-      # 安裝 PM2 (用於在 EC2 上管理 Node.js 服務)
-      - echo "Installing global tools: PM2"
-      - npm install -g pm2
-
-  # 2. PRE_BUILD PHASE: 安裝依賴套件 (重點：確保在正確的目錄下執行)
-  pre_build:
-    commands:
-      # 安裝後端依賴
+      # 1. 建置前端
+      - echo "Building React frontend..."
+      - cd frontend
+      - npm install
+      - npm run build
+      - cd .. # 回到根目錄
+      
+      # 2. (可選) 安裝後端依賴 (如果您的 scripts 需要)
       - echo "Installing backend dependencies..."
       - cd backend
       - npm install
-      - cd .. # 返回專案根目錄 (重要)
-      
-      # 安裝前端依賴
-      - echo "Installing frontend dependencies..."
-      - cd frontend
-      - npm install
-      - cd .. # 返回專案根目錄 (重要)
-
-  # 3. BUILD PHASE: 編譯前端專案 (重點：執行 react-scripts build)
-  build:
-    commands:
-      - echo "Building React frontend..."
-      - cd frontend
-      - npm run build # 這會執行 react-scripts build，並在 frontend/ 中生成一個 build/ 資料夾
-      - cd .. # 返回專案根目錄 (重要)
-      
-  # 4. POST_BUILD PHASE: 收尾工作
-  post_build:
-    commands:
-      - echo "Build and Artifacts preparation complete."
-      # 註：這裡不需要手動複製檔案，因為 artifacts 區塊會處理打包。
+      - cd .. # 回到根目錄
 
 artifacts:
+  # 3. 關鍵：只打包部署需要的檔案
   files:
-    # 打包所有檔案，包括：
-    # - appspec.yml
-    # - scripts/
-    # - backend/ (包含 node_modules/ 和 server.js)
-    # - frontend/ (包含 node_modules/、public/ 和 編譯後的 build/ 資料夾)
-    - '**/*' 
-  # CodeDeploy 使用 CodePipeline 產生的 Artifacts (zip 檔案) 作為輸入
+    - 'frontend/dist/**/*'   # 打包建置好的前端
+    - 'backend/**/*'         # 打包後端程式碼 (包含 node_modules)
+    - 'appspec.yml'          # 告訴 CodeDeploy 該做什麼
+    - 'scripts/*'            # 打包部署腳本
+  base-directory: .
